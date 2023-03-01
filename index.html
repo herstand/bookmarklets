@@ -4,6 +4,7 @@
             body {
                 background-color: #EEE;
                 font-family: Helvetica, sans-serif;
+                font-size: 1em;
             }
             header {
                 text-align: center;
@@ -22,7 +23,7 @@
                 margin-top:0px;
                 padding-top:0px;
             }
-        a {
+        a.tool {
             border:1px solid black;
             border-radius:5px;
             color:white;
@@ -43,20 +44,20 @@
     <body>
         <header>
         <h1>Bookmarklets!</h1>
-        <p>Tools you access from your browser's bookmarks/favorites bar that add features to a website.</p>
+        <p>Tools for your browser's Bookmark's Bar<sup><a href="https://www.google.com/search?q=browser+bookmarks+bar&client=safari&rls=en&source=lnms&tbm=isch&sa=X&ved=2ahUKEwjLqZ3ukbv9AhValIkEHQprBikQ_AUoAXoECAEQAw&biw=1538&bih=976&dpr=2">?</a></sup> that add features to a website with a click.</p>
         </header>
         <main>
         <section>
         <h2>Google Meet Mirror Video</h2>
         <span id="GoogleMeetMirrorVideo"></span>
         <p><strong>Installation:</strong> Drag the above button to your browser's Bookmarks Bar.</p>
-        <p><strong>How to use:</strong> Click the "Mirror My Video" bookmark when in a meeting to mirror your video.</p>
+        <p><strong>How to use:</strong> Click the "Mirror My Video" bookmark when in a Google Meet meeting to mirror your video.</p>
         <p><strong>Notes: </strong> Google resets your video whenever someone joins/leaves the call. Click again to mirror again.</p>
     </section>
     </main>
         <script type="module">
             import FlipMyVidURI from "./src/googlemeet/index.js";
-            document.getElementById("GoogleMeetMirrorVideo").innerHTML = `<a href="${FlipMyVidURI}">Mirror My Video</a>`;
+            document.getElementById("GoogleMeetMirrorVideo").innerHTML = `<a class="tool" href="${FlipMyVidURI}">Mirror My Video</a>`;
             document.querySelector("#GoogleMeetMirrorVideo a").onclick = () => { alert("Drag the button to your bookmarks bar. Don't click on it.") };
         </script>
     </body>
