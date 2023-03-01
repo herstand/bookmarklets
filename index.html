@@ -49,7 +49,7 @@
         <section>
         <h2>Google Meet Mirror Video</h2>
         <span id="GoogleMeetMirrorVideo"></span>
-        <p><strong>Installation:</strong> Drag the button to your browser's Bookmarks Bar.</p>
+        <p><strong>Installation:</strong> Drag the above button to your browser's Bookmarks Bar.</p>
         <p><strong>How to use:</strong> Click it when in a meeting to mirror your video.</p>
         <p><strong>Notes: </strong> Google resets your video whenever someone joins/leaves the call. Click again to mirror again.</p>
     </section>
@@ -57,7 +57,7 @@
         <script type="module">
             import FlipMyVidURI from "./src/googlemeet/index.js";
             document.getElementById("GoogleMeetMirrorVideo").innerHTML = `<a href="${FlipMyVidURI}">Mirror My Video</a>`;
-            document.querySelector("#GoogleMeetMirrorVideo a").onClick = () => { alert("Drag the button to your bookmarks bar. Don't click on it.") };
+            document.querySelector("#GoogleMeetMirrorVideo a").onclick = () => { alert("Drag the button to your bookmarks bar. Don't click on it.") };
         </script>
     </body>
 </html>
