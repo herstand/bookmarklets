@@ -2,7 +2,24 @@
     <head>
         <style>
             body {
+                background-color: #EEE;
+            }
+            header {
+                text-align: center;
+            }
+            header, main {
                 max-width: 600px;
+                margin: 20px auto;
+            }
+            main {
+                border: 2px solid grey;
+                border-radius:5px;
+                padding: 10px 50px 50px 50px;
+                height:100vh;
+            }
+            h1 {
+                margin-top:0px;
+                padding-top:0px;
             }
         a {
             border:1px solid black;
@@ -14,17 +31,25 @@
             background-color:#1a73e8;
         }
         h2 {
-            border-top: 1px solid grey;
             padding-top: 10px;
+        }
+        section {
+            border-bottom: 2px solid grey;
         }
         </style>
     </head>
     <body>
+        <header>
         <h1>Bookmarklets!</h1>
-        <p>A bookmarklet is a tool you access from your browser's bookmarkets/favorites bar that can add features to the website you're currently viewing.</p>
+        <p>Tools you access from your browser's bookmarkets/favorites bar that add features to a website.</p>
+        </header>
+        <main>
+        
         <h2>Google Meet Mirror Video</h2>
-        <p>Drag to your browser's Bookmarks Bar:</p>
+        <p>Drag the button to your browser's Bookmarks Bar.</p>
+        <p>Click it when in a meeting to mirror your video.</p>
         <span id="GoogleMeetMirrorVideo"></span>
+    </main>
         <script type="module">
             import FlipMyVidURI from "./src/googlemeet/index.js";
             document.getElementById("GoogleMeetMirrorVideo").innerHTML = `<a href="${FlipMyVidURI}">Mirror My Video</a>`;
