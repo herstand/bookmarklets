@@ -1,0 +1,34 @@
+<html>
+    <head>
+        <style>
+            body {
+                max-width: 600px;
+            }
+        a {
+            border:1px solid black;
+            border-radius:5px;
+            color:white;
+            text-decoration: none!important;
+            display:inline-block;
+            padding:5px 10px;
+            background-color:#1a73e8;
+        }
+        h2 {
+            border-top: 1px solid grey;
+            padding-top: 10px;
+        }
+        </style>
+    </head>
+    <body>
+        <h1>Bookmarklets!</h1>
+        <p>A bookmarklet is a tool you access from your browser's bookmarkets/favorites bar that can add features to the website you're currently viewing.</p>
+        <h2>Google Meet Mirror Video</h2>
+        <p>Drag to your browser's Bookmarks Bar:</p>
+        <span id="GoogleMeetMirrorVideo"></span>
+        <script type="module">
+            import FlipMyVidURI from "./src/googlemeet/index.js";
+            document.getElementById("GoogleMeetMirrorVideo").innerHTML = `<a href="${FlipMyVidURI}">Mirror My Video</a>`;
+            document.querySelector("#GoogleMeetMirrorVideo a").onClick = () => { alert("Drag the button to your bookmarks bar. Don't click on it.") };
+        </script>
+    </body>
+</html>
