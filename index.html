@@ -1,23 +1,44 @@
 <html>
     <head>
         <style>
+            * {
+                box-sizing: border-box;
+            }
+            html {
+                height: 100%;
+            }
             body {
                 background-color: #EEE;
                 font-family: Helvetica, sans-serif;
                 font-size: 1em;
+                display: flex;
+                flex-flow: column;
+                height: 100%;
             }
             header {
                 text-align: center;
             }
+            header, main, footer {
+                width: 600px;
+                margin: auto;
+            }
             header, main {
                 max-width: 600px;
-                margin: 20px auto;
+                margin-top: 20px;
             }
             main {
                 border: 2px solid grey;
                 border-radius:5px;
                 padding: 10px 50px 50px 50px;
-                height:100vh;
+                flex-grow: 1;
+            }
+            footer {
+                text-align: left;
+                padding:0px;
+                margin-top: 3px;
+            }
+            footer a {
+                text-decoration: none;
             }
             h1 {
                 margin-top:0px;
@@ -56,6 +77,7 @@
         <p><strong>Notes: </strong> Google resets your video whenever someone joins/leaves the call. Click again to mirror again.</p>
     </section>
     </main>
+    <footer>By <a target="_blank" href="https://herstand.com">Micah Cowsik-Herstand</a> | See <a href="https://github.com/herstand/bookmarklets">source code on Github</a></footer>
         <script type="module">
             import FlipMyVidURI from "./src/googlemeet/index.js";
             document.getElementById("GoogleMeetMirrorVideo").innerHTML = `<a class="tool" href="${FlipMyVidURI}">Mirror My Video</a>`;
