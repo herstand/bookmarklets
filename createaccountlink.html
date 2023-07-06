@@ -1,0 +1,24 @@
+<html>
+
+<head>
+    <script>
+        const GetUserAccountLink = async () => {
+            const userData = (await (await fetch(`https://api.v2.limberhealth.com/user/${atob(window.location.pathname.substring(window.location.pathname.lastIndexOf("/") + 1))}`)).json())[0];
+            alert(`The Create Account Link for ${userData.first_name} ${userData.last_name} is: https://limberv2.app.link/create-account-limber?uid=${userData.id}&uuid=${userData.uuid}`);
+        }
+
+        const code = GetUserAccountLink.toString();
+        const GetUserAccountLinkdURI = encodeURI(`javascript:(${code})()`);
+        console.log(GetUserAccountLinkdURI);
+    </script>
+</head>
+
+<body>
+    <h1>Drag this button to your bookmarks bar and click it when on a user's profile.</h1>
+    <a style="background:purple;color:white;border-radius:5px;padding:5px;text-decoration:none" id="createAccountLink"
+        href="">Get Create
+        Account Link</a>
+    <script>document.getElementById("createAccountLink").href = GetUserAccountLinkdURI;</script>
+</body>
+
+</html>
