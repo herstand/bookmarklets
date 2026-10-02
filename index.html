@@ -76,12 +76,22 @@
         <p><strong>How to use:</strong> Click the "Mirror My Video" bookmark when in a Google Meet meeting to mirror your video.</p>
         <p><strong>Notes: </strong> Google resets your video whenever someone joins/leaves the call. Click again to mirror again.</p>
     </section>
+    <section>
+        <h2>Microsoft Teams Move Video Tiles</h2>
+        <span id="TeamsMoveVideoTiles"></span>
+        <p><strong>Installation:</strong> Drag the above button to your browser's Bookmarks Bar.</p>
+        <p><strong>How to use:</strong> Click the "Teams: Move Tiles" bookmark while in a Teams meeting in your browser, then drag any participant's video tile onto the spot where you want it. The other tiles slide over to make room and everything snaps back into the grid, like rearranging the gallery in Zoom. Works in the regular gallery and in the thumbnail strip while someone is sharing their screen.</p>
+        <p><strong>Notes: </strong> Click the bookmark again to restore the usual order and turn arranging off. Press Escape mid-drag to cancel. Buttons inside a tile still work normally; only dragging the tile itself moves it. Your order is kept for each person when cameras go on or off or when Teams rearranges the gallery, and it only changes what you see.</p>
+    </section>
     </main>
     <footer>By <a target="_blank" href="https://herstand.com">Micah Cowsik-Herstand</a> | See <a href="https://github.com/herstand/bookmarklets">source code on Github</a></footer>
         <script type="module">
             import FlipMyVidURI from "./src/googlemeet/index.js";
+            import MoveTeamsTilesURI from "./src/teams/index.js";
             document.getElementById("GoogleMeetMirrorVideo").innerHTML = `<a class="tool" href="${FlipMyVidURI}">Mirror My Video</a>`;
             document.querySelector("#GoogleMeetMirrorVideo a").onclick = () => { alert("Drag the button to your bookmarks bar. Don't click on it.") };
+            document.getElementById("TeamsMoveVideoTiles").innerHTML = `<a class="tool" href="${MoveTeamsTilesURI}">Teams: Move Tiles</a>`;
+            document.querySelector("#TeamsMoveVideoTiles a").onclick = () => { alert("Drag the button to your bookmarks bar. Don't click on it.") };
         </script>
     </body>
 </html>
