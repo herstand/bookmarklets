@@ -26,4 +26,8 @@ python3 -m http.server 8765
 
 `npm run build` writes `bookmarklets.html`, a single self-contained page with every bookmarklet, the styles, and the script inlined. It needs no server and can be opened from disk or hosted anywhere.
 
+## Publishing
+
+`npm run upload` builds the page and replaces `bookmarklets.html` in the `developers.limberhealth.com` S3 bucket, so it goes live at https://developers.limberhealth.com/bookmarklets.html. It uses the `prod-v2` AWS SSO profile and only prompts for an SSO login when the session has expired.
+
 Keep `#` out of a tool's source: encodeURI leaves it alone, and some browsers treat it as the start of a URL fragment and truncate the bookmarklet. The build fails if it finds one.
