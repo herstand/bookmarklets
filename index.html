@@ -1,97 +1,20 @@
-<html>
-    <head>
-        <style>
-            * {
-                box-sizing: border-box;
-            }
-            html {
-                height: 100%;
-            }
-            body {
-                background-color: #EEE;
-                font-family: Helvetica, sans-serif;
-                font-size: 1em;
-                display: flex;
-                flex-flow: column;
-                height: 100%;
-            }
-            header {
-                text-align: center;
-            }
-            header, main, footer {
-                width: 600px;
-                margin: auto;
-            }
-            header, main {
-                max-width: 600px;
-                margin-top: 20px;
-            }
-            main {
-                border: 2px solid grey;
-                border-radius:5px;
-                padding: 10px 50px 50px 50px;
-                flex-grow: 1;
-            }
-            footer {
-                text-align: left;
-                padding:0px;
-                margin-top: 3px;
-            }
-            footer a {
-                text-decoration: none;
-            }
-            h1 {
-                margin-top:0px;
-                padding-top:0px;
-            }
-        a.tool {
-            border:1px solid black;
-            border-radius:5px;
-            color:white;
-            text-decoration: none!important;
-            display:inline-block;
-            padding:5px 10px;
-            background-color:#1a73e8;
-        }
-        h2 {
-            margin-top: 0px;
-            padding-top: 10px;
-        }
-        section {
-            border-bottom: 2px solid grey;
-            padding-bottom: 20px;
-        }
-        </style>
-    </head>
-    <body>
-        <header>
-        <h1>Bookmarklets!</h1>
-        <p>Tools for your browser's Bookmark's Bar<sup><a target="_blank" rel="noopener noreferrer" href="https://www.google.com/search?q=browser+bookmarks+bar&client=safari&rls=en&source=lnms&tbm=isch&sa=X&ved=2ahUKEwjLqZ3ukbv9AhValIkEHQprBikQ_AUoAXoECAEQAw&biw=1538&bih=976&dpr=2">?</a></sup> that add features to a website with a click.</p>
-        </header>
-        <main>
-        <section>
-        <h2>Google Meet Mirror Video</h2>
-        <span id="GoogleMeetMirrorVideo"></span>
-        <p><strong>Installation:</strong> Drag the above button to your browser's Bookmarks Bar.</p>
-        <p><strong>How to use:</strong> Click the "Mirror My Video" bookmark when in a Google Meet meeting to mirror your video.</p>
-        <p><strong>Notes: </strong> Google resets your video whenever someone joins/leaves the call. Click again to mirror again.</p>
-    </section>
-    <section>
-        <h2>Microsoft Teams Move Video Tiles</h2>
-        <span id="TeamsMoveVideoTiles"></span>
-        <p><strong>Installation:</strong> Drag the above button to your browser's Bookmarks Bar.</p>
-        <p><strong>How to use:</strong> Click the "Teams: Move Tiles" bookmark while in a Teams meeting in your browser, then drag any participant's video tile onto the spot where you want it. The other tiles slide over to make room and everything snaps back into the grid, like rearranging the gallery in Zoom. Works in the regular gallery and in the thumbnail strip while someone is sharing their screen.</p>
-        <p><strong>Notes: </strong> Click the bookmark again to restore the usual order and turn arranging off. Press Escape mid-drag to cancel. Buttons inside a tile still work normally; only dragging the tile itself moves it. Your order is kept for each person when cameras go on or off or when Teams rearranges the gallery, and it only changes what you see.</p>
-    </section>
-    </main>
-    <footer>By <a target="_blank" href="https://herstand.com">Micah Cowsik-Herstand</a> | See <a href="https://github.com/herstand/bookmarklets">source code on Github</a></footer>
-        <script type="module">
-            import FlipMyVidURI from "./src/googlemeet/index.js";
-            import MoveTeamsTilesURI from "./src/teams/index.js";
-            document.getElementById("GoogleMeetMirrorVideo").innerHTML = `<a class="tool" href="${FlipMyVidURI}">Mirror My Video</a>`;
-            document.querySelector("#GoogleMeetMirrorVideo a").onclick = () => { alert("Drag the button to your bookmarks bar. Don't click on it.") };
-            document.getElementById("TeamsMoveVideoTiles").innerHTML = `<a class="tool" href="${MoveTeamsTilesURI}">Teams: Move Tiles</a>`;
-            document.querySelector("#TeamsMoveVideoTiles a").onclick = () => { alert("Drag the button to your bookmarks bar. Don't click on it.") };
-        </script>
-    </body>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bookmarklets</title>
+  <link rel="stylesheet" href="./src/site/styles.css">
+</head>
+<body>
+  <noscript><p style="padding: 24px">This page needs JavaScript to build its bookmarklets. Open <code>bookmarklets.html</code> instead.</p></noscript>
+  <script type="module">
+    import groups from "./src/tools.js";
+    import { renderPage } from "./src/site/render.js";
+    import { enhancePage } from "./src/site/enhance.js";
+
+    document.body.innerHTML = renderPage(groups);
+    enhancePage();
+  </script>
+</body>
 </html>

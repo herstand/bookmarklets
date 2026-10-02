@@ -1,0 +1,402 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bookmarklets</title>
+  <style>
+:root {
+  --bg: #f4f5fa;
+  --card: #ffffff;
+  --text: #1c1e2b;
+  --muted: #5f6475;
+  --line: #e2e4ee;
+  --accent: #3b5bdb;
+  --shadow: 0 1px 2px rgba(20, 22, 40, 0.05), 0 10px 28px rgba(20, 22, 40, 0.06);
+  color-scheme: light dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #101219;
+    --card: #191c27;
+    --text: #e9ebf3;
+    --muted: #a3a7b8;
+    --line: #2a2e3e;
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.5), 0 10px 28px rgba(0, 0, 0, 0.35);
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+  color: var(--text);
+  font: 16px/1.55 system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+.site-header,
+main,
+footer {
+  width: min(840px, 100% - 32px);
+  margin: 0 auto;
+}
+
+.site-header {
+  padding-top: 56px;
+}
+
+h1 {
+  margin: 0 0 8px;
+  font-size: clamp(2.2rem, 5vw, 3rem);
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+
+.tagline {
+  margin: 0 0 24px;
+  font-size: 1.15rem;
+  color: var(--muted);
+}
+
+.howto {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 18px 22px;
+  box-shadow: var(--shadow);
+}
+
+.howto h2 {
+  margin: 0 0 8px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.howto ol {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.howto li + li {
+  margin-top: 4px;
+}
+
+kbd {
+  font: 0.85em ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-bottom-width: 2px;
+  border-radius: 6px;
+  padding: 1px 7px;
+  white-space: nowrap;
+}
+
+html[data-os="mac"] kbd[data-os="win"],
+html[data-os="win"] kbd[data-os="mac"] {
+  opacity: 0.55;
+}
+
+.toc {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 20px 0 0;
+}
+
+.toc a {
+  color: var(--text);
+  text-decoration: none;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 5px 14px;
+  font-size: 0.95rem;
+}
+
+.toc a:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.group {
+  margin: 44px 0 0;
+}
+
+.group h2 {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0 0 16px;
+  font-size: 1.5rem;
+  scroll-margin-top: 24px;
+}
+
+.monogram {
+  display: inline-grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 11px;
+  background: var(--accent);
+  color: #fff;
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.tool {
+  display: grid;
+  grid-template-columns: 230px 1fr;
+  gap: 28px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--accent);
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: var(--shadow);
+}
+
+.tool + .tool {
+  margin-top: 16px;
+}
+
+.tool-install {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.bookmarklet {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  max-width: 100%;
+  background: var(--accent);
+  color: #fff;
+  font-weight: 600;
+  text-decoration: none;
+  padding: 12px 18px;
+  border-radius: 12px;
+  cursor: grab;
+  user-select: none;
+  box-shadow: 0 6px 16px color-mix(in srgb, var(--accent) 35%, transparent);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.bookmarklet:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 22px color-mix(in srgb, var(--accent) 42%, transparent);
+}
+
+.bookmarklet:active {
+  cursor: grabbing;
+  transform: translateY(0);
+}
+
+.grip {
+  flex: none;
+  width: 10px;
+  height: 16px;
+  background-image: radial-gradient(circle, rgba(255, 255, 255, 0.9) 1.3px, transparent 1.7px);
+  background-size: 5px 5px;
+}
+
+.drag-hint {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--muted);
+  transition: color 0.2s ease;
+}
+
+.tool.nudge .bookmarklet {
+  animation: wiggle 0.6s ease;
+}
+
+.tool.nudge .drag-hint {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+@keyframes wiggle {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-6px); }
+  40% { transform: translateX(6px); }
+  60% { transform: translateX(-4px); }
+  80% { transform: translateX(4px); }
+}
+
+.tool-body h3 {
+  margin: 0 0 6px;
+  font-size: 1.25rem;
+}
+
+.summary {
+  margin: 0 0 14px;
+  color: var(--muted);
+}
+
+.tool-body h4 {
+  margin: 0 0 6px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.tool-body ol {
+  margin: 0 0 14px;
+  padding-left: 20px;
+}
+
+.tool-body li + li {
+  margin-top: 4px;
+}
+
+.notes {
+  margin: 0;
+  font-size: 0.95rem;
+  color: var(--muted);
+}
+
+footer {
+  margin-top: auto;
+  padding: 48px 0 40px;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+footer a {
+  color: inherit;
+}
+
+@media (max-width: 640px) {
+  .site-header {
+    padding-top: 36px;
+  }
+
+  .tool {
+    grid-template-columns: 1fr;
+    gap: 18px;
+    padding: 20px;
+  }
+}
+
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <h1>Bookmarklets</h1>
+    <p class="tagline">Little tools that live in your bookmarks bar and add features to websites with one click.</p>
+    <aside class="howto">
+      <h2>How to install one</h2>
+      <ol>
+        <li>Show your bookmarks bar: <kbd data-os="mac">⌘ Shift B</kbd> on a Mac, <kbd data-os="win">Ctrl Shift B</kbd> on Windows.</li>
+        <li>Drag a button below onto the bookmarks bar. Clicking it here does nothing.</li>
+        <li>Open the matching site and click your new bookmark.</li>
+      </ol>
+    </aside>
+    <nav class="toc" aria-label="Sites">
+      <a href="#google-meet">Google Meet</a>
+      <a href="#microsoft-teams">Microsoft Teams</a>
+      <a href="#limber-health">Limber Health</a>
+    </nav>
+  </header>
+  <main>
+    <section class="group" id="google-meet" style="--accent: #00897b">
+      <h2><span class="monogram" aria-hidden="true">GM</span>Google Meet</h2>
+      <article class="tool" id="google-meet-mirror-video">
+        <div class="tool-install">
+          <a class="bookmarklet" href="javascript:(()%20=%3E%20%7B%0A%20%20const%20videos%20=%20document.querySelectorAll(%22%5Bdata-ssrc%5D%20video%22);%0A%20%20const%20lastVideo%20=%20videos%5Bvideos.length-1%5D;%0A%20%20const%20lastVideoTransformVal%20=%20lastVideo.style.transform%20?%20lastVideo.style.transform.substring(7,lastVideo.style.transform.length-1)%20:%20%22%22;%0A%20%20const%20lastVideoTransformVal_number%20=%20lastVideoTransformVal%20?%20/(%5B%5E(%5E)%5D+)%5B)%5D+/.exec(lastVideoTransformVal)%5B1%5D%20:%20%22%22;%0A%20%20lastVideo.style.transform%20=%20%60scaleX(calc($%7BlastVideoTransformVal_number%20?%20%60$%7BlastVideoTransformVal_number%7D*-1)%60:%60calc(1)%60%7D)%60;%0A%7D)()" title="Drag me to your bookmarks bar"><span class="grip" aria-hidden="true"></span>Mirror My Video</a>
+          <p class="drag-hint">Drag this button to your bookmarks bar</p>
+        </div>
+        <div class="tool-body">
+          <h3>Mirror My Video</h3>
+          <p class="summary">Flips your own camera preview so it matches what you see in a mirror.</p>
+          <h4>How to use</h4>
+          <ol>
+            <li>Join a Google Meet meeting.</li>
+            <li>Click the bookmark to mirror your video.</li>
+            <li>Click it again to flip back.</li>
+          </ol>
+          <p class="notes"><strong>Notes:</strong> Google resets your video whenever someone joins or leaves the call. Click the bookmark again to mirror it again.</p>
+        </div>
+      </article>
+    </section>
+    <section class="group" id="microsoft-teams" style="--accent: #5b5fc7">
+      <h2><span class="monogram" aria-hidden="true">T</span>Microsoft Teams</h2>
+      <article class="tool" id="teams-move-tiles">
+        <div class="tool-install">
+          <a class="bookmarklet" href="javascript:(()%20=%3E%20%7B%0A%20%20const%20NS%20=%20%22__teamsTileMover%22;%0A%20%20if%20(window%5BNS%5D)%20%7B%0A%20%20%20%20window%5BNS%5D.disable();%0A%20%20%20%20return;%0A%20%20%7D%0A%0A%20%20const%20DRAG_THRESHOLD%20=%204;%0A%20%20const%20SLIDE%20=%20%22translate%20160ms%20ease%22;%0A%20%20const%20INTERACTIVE%20=%20'button,%20a,%20input,%20textarea,%20select,%20%5Brole=%22button%22%5D,%20%5Brole=%22checkbox%22%5D,%20%5Brole=%22menuitemcheckbox%22%5D,%20%5Brole=%22slider%22%5D,%20%5Brole=%22tab%22%5D,%20%5Bcontenteditable=%22true%22%5D';%0A%20%20const%20TILE_MARKERS%20=%20%5B%0A%20%20%20%20'%5Bdata-tid%5E=%22video-item-container-%22%5D',%0A%20%20%20%20'%5Bdata-stream-type=%22Video%22%5D',%0A%20%20%20%20'%5Bdata-tid=%22participant-tile%22%5D',%0A%20%20%20%20'%5Bdata-tid%5E=%22participant-tile-%22%5D',%0A%20%20%20%20'%5Bdata-tid=%22video-tile%22%5D',%0A%20%20%20%20'%5Bdata-tid=%22local-video-tile%22%5D',%0A%20%20%20%20'%5Bdata-cid=%22calling-participant-stream%22%5D',%0A%20%20%20%20'%5Bdata-tid=%22calling-participant-stream%22%5D',%0A%20%20%20%20'%5Bdata-tid=%22stream-container%22%5D'%0A%20%20%5D;%0A%20%20const%20ITEM%20=%20'%5Brole=%22menuitem%22%5D,%20%5Brole=%22listitem%22%5D,%20%5Brole=%22gridcell%22%5D';%0A%20%20const%20SHARE_HINT%20=%20/share%7Csharing%7Cscreen%7Ccontent%7Cpresentation%7Cwhiteboard/i;%0A%0A%20%20const%20state%20=%20%7B%0A%20%20%20%20order:%20%5B%5D,%0A%20%20%20%20styled:%20new%20Map(),%0A%20%20%20%20ancestors:%20new%20Map(),%0A%20%20%20%20drag:%20null,%0A%20%20%20%20observers:%20%5B%5D,%0A%20%20%20%20listeners:%20%5B%5D,%0A%20%20%20%20unclipped:%20new%20WeakMap(),%0A%20%20%20%20timer:%200,%0A%20%20%20%20z:%201000,%0A%20%20%20%20raf:%200%0A%20%20%7D;%0A%0A%20%20const%20documents%20=%20()%20=%3E%20%7B%0A%20%20%20%20const%20out%20=%20%5Bdocument%5D;%0A%20%20%20%20document.querySelectorAll(%22iframe%22).forEach((f)%20=%3E%20%7B%0A%20%20%20%20%20%20try%20%7B%0A%20%20%20%20%20%20%20%20if%20(f.contentDocument%20&amp;&amp;%20f.contentDocument.body)%20out.push(f.contentDocument);%0A%20%20%20%20%20%20%7D%20catch%20(e)%20%7B%7D%0A%20%20%20%20%7D);%0A%20%20%20%20return%20out;%0A%20%20%7D;%0A%0A%20%20const%20rectOf%20=%20(el)%20=%3E%20el.getBoundingClientRect();%0A%20%20const%20area%20=%20(el)%20=%3E%20%7B%0A%20%20%20%20const%20r%20=%20rectOf(el);%0A%20%20%20%20return%20r.width%20*%20r.height;%0A%20%20%7D;%0A%20%20const%20visible%20=%20(el)%20=%3E%20%7B%0A%20%20%20%20const%20r%20=%20rectOf(el);%0A%20%20%20%20return%20r.width%20%3E=%2048%20&amp;&amp;%20r.height%20%3E=%2036;%0A%20%20%7D;%0A%20%20const%20looksLikeShare%20=%20(el)%20=%3E%20%7B%0A%20%20%20%20const%20attrs%20=%20%5Bel.getAttribute(%22data-tid%22),%20el.getAttribute(%22data-cid%22),%20el.getAttribute(%22data-stream-type%22),%20el.getAttribute(%22aria-label%22)%5D.join(%22%20%22);%0A%20%20%20%20return%20SHARE_HINT.test(attrs);%0A%20%20%7D;%0A%20%20const%20isShare%20=%20(el)%20=%3E%20looksLikeShare(el)%20%7C%7C%20Array.from(el.querySelectorAll(%22%5Bdata-stream-type%5D%22)).some((s)%20=%3E%20SHARE_HINT.test(s.getAttribute(%22data-stream-type%22)));%0A%0A%20%20const%20mediaOf%20=%20(doc)%20=%3E%20Array.from(doc.querySelectorAll('video,%20img,%20%5Brole=%22img%22%5D')).filter((m)%20=%3E%20visible(m)%20&amp;&amp;%20!m.closest('%5Brole=%22dialog%22%5D,%20%5Brole=%22complementary%22%5D,%20%5Brole=%22navigation%22%5D,%20%5Brole=%22banner%22%5D,%20header,%20nav'));%0A%0A%20%20const%20overlaps%20=%20(a,%20b)%20=%3E%20%7B%0A%20%20%20%20const%20ra%20=%20rectOf(a),%20rb%20=%20rectOf(b);%0A%20%20%20%20const%20x%20=%20Math.max(0,%20Math.min(ra.right,%20rb.right)%20-%20Math.max(ra.left,%20rb.left));%0A%20%20%20%20const%20y%20=%20Math.max(0,%20Math.min(ra.bottom,%20rb.bottom)%20-%20Math.max(ra.top,%20rb.top));%0A%20%20%20%20const%20inter%20=%20x%20*%20y;%0A%20%20%20%20const%20smaller%20=%20Math.min(ra.width%20*%20ra.height,%20rb.width%20*%20rb.height)%20%7C%7C%201;%0A%20%20%20%20return%20inter%20/%20smaller%20%3E%200.6;%0A%20%20%7D;%0A%0A%20%20const%20heuristicTiles%20=%20(doc)%20=%3E%20%7B%0A%20%20%20%20const%20media%20=%20mediaOf(doc);%0A%20%20%20%20if%20(!media.length)%20return%20%5B%5D;%0A%20%20%20%20const%20tiles%20=%20%5B%5D;%0A%20%20%20%20const%20walk%20=%20(container)%20=%3E%20%7B%0A%20%20%20%20%20%20Array.from(container.children).forEach((child)%20=%3E%20%7B%0A%20%20%20%20%20%20%20%20const%20inside%20=%20media.filter((m)%20=%3E%20child.contains(m));%0A%20%20%20%20%20%20%20%20if%20(!inside.length)%20return;%0A%20%20%20%20%20%20%20%20const%20sameSpot%20=%20inside.every((m)%20=%3E%20overlaps(m,%20inside%5B0%5D));%0A%20%20%20%20%20%20%20%20if%20(inside.length%20===%201%20%7C%7C%20sameSpot)%20%7B%0A%20%20%20%20%20%20%20%20%20%20tiles.push(child);%0A%20%20%20%20%20%20%20%20%7D%20else%20%7B%0A%20%20%20%20%20%20%20%20%20%20walk(child);%0A%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%7D);%0A%20%20%20%20%7D;%0A%20%20%20%20walk(doc.body);%0A%20%20%20%20return%20tiles.filter((t)%20=%3E%20visible(t)%20&amp;&amp;%20!isShare(t));%0A%20%20%7D;%0A%0A%20%20const%20tileOf%20=%20(marker)%20=%3E%20%7B%0A%20%20%20%20const%20item%20=%20marker.closest(ITEM);%0A%20%20%20%20if%20(item%20&amp;&amp;%20item%20!==%20marker%20&amp;&amp;%20area(item)%20%3C=%20area(marker)%20*%201.5)%20return%20item;%0A%20%20%20%20return%20marker;%0A%20%20%7D;%0A%0A%20%20const%20findTiles%20=%20(doc)%20=%3E%20%7B%0A%20%20%20%20const%20found%20=%20new%20Set();%0A%20%20%20%20TILE_MARKERS.forEach((sel)%20=%3E%20%7B%0A%20%20%20%20%20%20doc.querySelectorAll(sel).forEach((m)%20=%3E%20%7B%0A%20%20%20%20%20%20%20%20if%20(visible(m)%20&amp;&amp;%20!isShare(m))%20found.add(tileOf(m));%0A%20%20%20%20%20%20%7D);%0A%20%20%20%20%7D);%0A%20%20%20%20const%20tiles%20=%20Array.from(found).filter((t)%20=%3E%20!Array.from(found).some((other)%20=%3E%20other%20!==%20t%20&amp;&amp;%20other.contains(t)));%0A%20%20%20%20return%20tiles.length%20?%20tiles%20:%20heuristicTiles(doc);%0A%20%20%7D;%0A%0A%20%20const%20allTiles%20=%20()%20=%3E%20documents().flatMap(findTiles);%0A%0A%20%20const%20tileKey%20=%20(tile)%20=%3E%20%7B%0A%20%20%20%20const%20tagged%20=%20%5Btile%5D.concat(Array.from(tile.querySelectorAll(%22%5Bdata-tid%5D%22)));%0A%20%20%20%20const%20stream%20=%20tagged.find((el)%20=%3E%20el.hasAttribute(%22data-stream-type%22)%20&amp;&amp;%20el.getAttribute(%22data-tid%22));%0A%20%20%20%20if%20(stream)%20return%20%22id:%22%20+%20stream.getAttribute(%22data-stream-type%22)%20+%20%22:%22%20+%20stream.getAttribute(%22data-tid%22);%0A%20%20%20%20const%20marker%20=%20tagged.find((el)%20=%3E%20/%5Evideo-item-container-/.test(el.getAttribute(%22data-tid%22)%20%7C%7C%20%22%22))%20%7C%7C%20tagged.find((el)%20=%3E%20/participant%7Ctile%7Cstream/i.test(el.getAttribute(%22data-tid%22)%20%7C%7C%20%22%22));%0A%20%20%20%20if%20(marker)%20return%20%22id:%22%20+%20marker.getAttribute(%22data-tid%22).replace(/%5Evideo-item-container-/,%20%22%22);%0A%20%20%20%20const%20label%20=%20tile.getAttribute(%22aria-label%22);%0A%20%20%20%20if%20(label)%20return%20%22label:%22%20+%20label;%0A%20%20%20%20return%20%22text:%22%20+%20(tile.textContent%20%7C%7C%20%22%22).trim().slice(0,%2080);%0A%20%20%7D;%0A%0A%20%20const%20remember%20=%20(el)%20=%3E%20%7B%0A%20%20%20%20if%20(!state.styled.has(el))%20%7B%0A%20%20%20%20%20%20state.styled.set(el,%20%7B%0A%20%20%20%20%20%20%20%20translate:%20el.style.translate,%0A%20%20%20%20%20%20%20%20zIndex:%20el.style.zIndex,%0A%20%20%20%20%20%20%20%20position:%20el.style.position,%0A%20%20%20%20%20%20%20%20cursor:%20el.style.cursor,%0A%20%20%20%20%20%20%20%20transition:%20el.style.transition,%0A%20%20%20%20%20%20%20%20outline:%20el.style.outline%0A%20%20%20%20%20%20%7D);%0A%20%20%20%20%20%20if%20(getComputedStyle(el).position%20===%20%22static%22)%20el.style.position%20=%20%22relative%22;%0A%20%20%20%20%7D%0A%20%20%7D;%0A%0A%20%20const%20parseTranslate%20=%20(value)%20=%3E%20%7B%0A%20%20%20%20const%20parts%20=%20(value%20%7C%7C%20%22%22).trim().split(/%5Cs+/).map(parseFloat);%0A%20%20%20%20return%20%7B%20dx:%20parts%5B0%5D%20%7C%7C%200,%20dy:%20parts%5B1%5D%20%7C%7C%200%20%7D;%0A%20%20%7D;%0A%20%20const%20shownTranslate%20=%20(tile)%20=%3E%20parseTranslate(getComputedStyle(tile).translate);%0A%0A%20%20const%20naturalRect%20=%20(tile)%20=%3E%20%7B%0A%20%20%20%20const%20r%20=%20rectOf(tile);%0A%20%20%20%20const%20t%20=%20shownTranslate(tile);%0A%20%20%20%20return%20%7B%20left:%20r.left%20-%20t.dx,%20top:%20r.top%20-%20t.dy,%20width:%20r.width,%20height:%20r.height%20%7D;%0A%20%20%7D;%0A%20%20const%20center%20=%20(r)%20=%3E%20(%7B%20x:%20r.left%20+%20r.width%20/%202,%20y:%20r.top%20+%20r.height%20/%202%20%7D);%0A%20%20const%20sameSize%20=%20(a,%20b)%20=%3E%20Math.abs(a.width%20-%20b.width)%20%3C=%200.25%20*%20Math.max(a.width,%20b.width)%20&amp;&amp;%20Math.abs(a.height%20-%20b.height)%20%3C=%200.25%20*%20Math.max(a.height,%20b.height);%0A%0A%20%20const%20rowMajor%20=%20(entries)%20=%3E%20%7B%0A%20%20%20%20const%20sorted%20=%20entries.slice().sort((a,%20b)%20=%3E%20a.natural.top%20-%20b.natural.top);%0A%20%20%20%20const%20rows%20=%20%5B%5D;%0A%20%20%20%20sorted.forEach((e)%20=%3E%20%7B%0A%20%20%20%20%20%20const%20row%20=%20rows%5Brows.length%20-%201%5D;%0A%20%20%20%20%20%20if%20(row%20&amp;&amp;%20Math.abs(e.natural.top%20-%20row%5B0%5D.natural.top)%20%3C%20Math.min(e.natural.height,%20row%5B0%5D.natural.height)%20/%202)%20row.push(e);%0A%20%20%20%20%20%20else%20rows.push(%5Be%5D);%0A%20%20%20%20%7D);%0A%20%20%20%20return%20rows.flatMap((row)%20=%3E%20row.sort((a,%20b)%20=%3E%20a.natural.left%20-%20b.natural.left));%0A%20%20%7D;%0A%0A%20%20const%20layout%20=%20()%20=%3E%20%7B%0A%20%20%20%20const%20seen%20=%20new%20Map();%0A%20%20%20%20const%20entries%20=%20rowMajor(allTiles().map((tile)%20=%3E%20%7B%0A%20%20%20%20%20%20let%20key%20=%20tileKey(tile);%0A%20%20%20%20%20%20const%20n%20=%20(seen.get(key)%20%7C%7C%200)%20+%201;%0A%20%20%20%20%20%20seen.set(key,%20n);%0A%20%20%20%20%20%20if%20(n%20%3E%201)%20key%20+=%20%22~%22%20+%20n;%0A%20%20%20%20%20%20return%20%7B%20tile,%20key,%20natural:%20naturalRect(tile)%20%7D;%0A%20%20%20%20%7D));%0A%20%20%20%20const%20present%20=%20new%20Set(entries.map((e)%20=%3E%20e.key));%0A%20%20%20%20const%20keys%20=%20state.order.filter((k)%20=%3E%20present.has(k));%0A%20%20%20%20entries.forEach((e)%20=%3E%20%7B%0A%20%20%20%20%20%20if%20(!keys.includes(e.key))%20keys.push(e.key);%0A%20%20%20%20%7D);%0A%20%20%20%20return%20%7B%20entries,%20slots:%20entries.map((e)%20=%3E%20e.natural),%20keys%20%7D;%0A%20%20%7D;%0A%0A%20%20const%20unclipAncestors%20=%20(tile)%20=%3E%20%7B%0A%20%20%20%20const%20doc%20=%20tile.ownerDocument;%0A%20%20%20%20const%20vw%20=%20doc.documentElement.clientWidth,%20vh%20=%20doc.documentElement.clientHeight;%0A%20%20%20%20let%20bounds%20=%20%7B%20left:%200,%20top:%200,%20right:%20vw,%20bottom:%20vh%20%7D;%0A%20%20%20%20let%20el%20=%20tile.parentElement;%0A%20%20%20%20while%20(el%20&amp;&amp;%20el%20!==%20doc.body%20&amp;&amp;%20el%20!==%20doc.documentElement)%20%7B%0A%20%20%20%20%20%20const%20cs%20=%20getComputedStyle(el);%0A%20%20%20%20%20%20const%20clips%20=%20/hidden%7Cauto%7Cscroll%7Cclip/.test(cs.overflowX%20+%20cs.overflowY)%20%7C%7C%20/paint%7Clayout%7Cstrict%7Ccontent/.test(cs.contain);%0A%20%20%20%20%20%20if%20(clips)%20%7B%0A%20%20%20%20%20%20%20%20const%20r%20=%20rectOf(el);%0A%20%20%20%20%20%20%20%20if%20(r.width%20%3E=%20vw%20*%200.9%20&amp;&amp;%20r.height%20%3E=%20vh%20*%200.9)%20%7B%0A%20%20%20%20%20%20%20%20%20%20bounds%20=%20%7B%20left:%20Math.max(bounds.left,%20r.left),%20top:%20Math.max(bounds.top,%20r.top),%20right:%20Math.min(bounds.right,%20r.right),%20bottom:%20Math.min(bounds.bottom,%20r.bottom)%20%7D;%0A%20%20%20%20%20%20%20%20%7D%20else%20if%20(!state.ancestors.has(el))%20%7B%0A%20%20%20%20%20%20%20%20%20%20state.ancestors.set(el,%20%7B%20overflow:%20el.style.overflow,%20contain:%20el.style.contain%20%7D);%0A%20%20%20%20%20%20%20%20%20%20el.style.overflow%20=%20%22visible%22;%0A%20%20%20%20%20%20%20%20%20%20el.style.contain%20=%20%22none%22;%0A%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20el%20=%20el.parentElement;%0A%20%20%20%20%7D%0A%20%20%20%20return%20bounds;%0A%20%20%7D;%0A%0A%20%20const%20clamp%20=%20(tile,%20dx,%20dy,%20bounds)%20=%3E%20%7B%0A%20%20%20%20const%20r%20=%20rectOf(tile);%0A%20%20%20%20const%20cur%20=%20shownTranslate(tile);%0A%20%20%20%20const%20left%20=%20r.left%20-%20cur.dx,%20top%20=%20r.top%20-%20cur.dy;%0A%20%20%20%20const%20minX%20=%20bounds.left%20-%20left,%20maxX%20=%20bounds.right%20-%20left%20-%20r.width;%0A%20%20%20%20const%20minY%20=%20bounds.top%20-%20top,%20maxY%20=%20bounds.bottom%20-%20top%20-%20r.height;%0A%20%20%20%20return%20%7B%0A%20%20%20%20%20%20dx:%20maxX%20%3C%20minX%20?%20dx%20:%20Math.min(Math.max(dx,%20minX),%20maxX),%0A%20%20%20%20%20%20dy:%20maxY%20%3C%20minY%20?%20dy%20:%20Math.min(Math.max(dy,%20minY),%20maxY)%0A%20%20%20%20%7D;%0A%20%20%7D;%0A%0A%20%20const%20place%20=%20(tile,%20dx,%20dy)%20=%3E%20%7B%0A%20%20%20%20remember(tile);%0A%20%20%20%20const%20cur%20=%20parseTranslate(tile.style.translate);%0A%20%20%20%20if%20(Math.abs(cur.dx%20-%20dx)%20%3E%200.5%20%7C%7C%20Math.abs(cur.dy%20-%20dy)%20%3E%200.5)%20tile.style.translate%20=%20Math.round(dx)%20+%20%22px%20%22%20+%20Math.round(dy)%20+%20%22px%22;%0A%20%20%7D;%0A%0A%20%20const%20floating%20=%20(tile)%20=%3E%20state.drag%20&amp;&amp;%20state.drag.moved%20&amp;&amp;%20state.drag.tile%20===%20tile;%0A%0A%20%20const%20applyLayout%20=%20(previewKeys)%20=%3E%20%7B%0A%20%20%20%20const%20%7B%20entries,%20slots,%20keys%20%7D%20=%20layout();%0A%20%20%20%20const%20order%20=%20previewKeys%20%7C%7C%20keys;%0A%20%20%20%20entries.forEach((e)%20=%3E%20%7B%0A%20%20%20%20%20%20if%20(floating(e.tile))%20return;%0A%20%20%20%20%20%20let%20idx%20=%20order.indexOf(e.key);%0A%20%20%20%20%20%20if%20(idx%20%3C%200)%20idx%20=%20keys.indexOf(e.key);%0A%20%20%20%20%20%20const%20slot%20=%20slots%5BMath.min(idx,%20slots.length%20-%201)%5D;%0A%20%20%20%20%20%20const%20nc%20=%20center(e.natural),%20sc%20=%20center(slot);%0A%20%20%20%20%20%20place(e.tile,%20sc.x%20-%20nc.x,%20sc.y%20-%20nc.y);%0A%20%20%20%20%7D);%0A%20%20%7D;%0A%0A%20%20const%20prime%20=%20(tile)%20=%3E%20%7B%0A%20%20%20%20remember(tile);%0A%20%20%20%20if%20(state.unclipped.get(tile)%20!==%20tile.parentElement)%20%7B%0A%20%20%20%20%20%20unclipAncestors(tile);%0A%20%20%20%20%20%20state.unclipped.set(tile,%20tile.parentElement);%0A%20%20%20%20%7D%0A%20%20%20%20if%20(floating(tile))%20return;%0A%20%20%20%20if%20(tile.style.cursor%20!==%20%22grab%22)%20tile.style.cursor%20=%20%22grab%22;%0A%20%20%20%20if%20(tile.style.transition%20!==%20SLIDE)%20tile.style.transition%20=%20SLIDE;%0A%20%20%7D;%0A%0A%20%20const%20refresh%20=%20()%20=%3E%20%7B%0A%20%20%20%20state.raf%20=%200;%0A%20%20%20%20allTiles().forEach(prime);%0A%20%20%20%20applyLayout(state.drag%20&amp;&amp;%20state.drag.preview);%0A%20%20%7D;%0A%20%20const%20scheduleRefresh%20=%20()%20=%3E%20%7B%0A%20%20%20%20if%20(!state.raf)%20state.raf%20=%20requestAnimationFrame(refresh);%0A%20%20%7D;%0A%20%20const%20onMutations%20=%20(records)%20=%3E%20%7B%0A%20%20%20%20const%20relevant%20=%20records.some((r)%20=%3E%20%7B%0A%20%20%20%20%20%20if%20(r.type%20!==%20%22attributes%22)%20return%20true;%0A%20%20%20%20%20%20const%20t%20=%20r.target;%0A%20%20%20%20%20%20if%20(!(t%20instanceof%20Element))%20return%20false;%0A%20%20%20%20%20%20const%20item%20=%20t.closest(ITEM);%0A%20%20%20%20%20%20return%20!item%20%7C%7C%20item%20===%20t;%0A%20%20%20%20%7D);%0A%20%20%20%20if%20(relevant)%20scheduleRefresh();%0A%20%20%7D;%0A%0A%20%20const%20slotAt%20=%20(slots,%20x,%20y)%20=%3E%20%7B%0A%20%20%20%20const%20hit%20=%20slots.findIndex((s)%20=%3E%20x%20%3E=%20s.left%20&amp;&amp;%20x%20%3C=%20s.left%20+%20s.width%20&amp;&amp;%20y%20%3E=%20s.top%20&amp;&amp;%20y%20%3C=%20s.top%20+%20s.height);%0A%20%20%20%20if%20(hit%20%3E=%200)%20return%20hit;%0A%20%20%20%20let%20best%20=%20-1,%20bestDistance%20=%20Infinity;%0A%20%20%20%20slots.forEach((s,%20i)%20=%3E%20%7B%0A%20%20%20%20%20%20const%20c%20=%20center(s);%0A%20%20%20%20%20%20const%20distance%20=%20Math.hypot(c.x%20-%20x,%20c.y%20-%20y);%0A%20%20%20%20%20%20if%20(distance%20%3C%20bestDistance)%20%7B%0A%20%20%20%20%20%20%20%20bestDistance%20=%20distance;%0A%20%20%20%20%20%20%20%20best%20=%20i;%0A%20%20%20%20%20%20%7D%0A%20%20%20%20%7D);%0A%20%20%20%20return%20best;%0A%20%20%7D;%0A%0A%20%20const%20tileFrom%20=%20(target)%20=%3E%20%7B%0A%20%20%20%20if%20(!(target%20instanceof%20Element))%20return%20null;%0A%20%20%20%20const%20tiles%20=%20findTiles(target.ownerDocument);%0A%20%20%20%20let%20best%20=%20null;%0A%20%20%20%20tiles.forEach((t)%20=%3E%20%7B%0A%20%20%20%20%20%20if%20(t.contains(target)%20&amp;&amp;%20(!best%20%7C%7C%20best.contains(t)))%20best%20=%20t;%0A%20%20%20%20%7D);%0A%20%20%20%20if%20(!best)%20return%20null;%0A%20%20%20%20const%20control%20=%20target.closest(INTERACTIVE);%0A%20%20%20%20if%20(control%20&amp;&amp;%20control%20!==%20best%20&amp;&amp;%20best.contains(control))%20return%20null;%0A%20%20%20%20return%20best;%0A%20%20%7D;%0A%0A%20%20let%20suppressClick%20=%20false;%0A%0A%20%20const%20lift%20=%20(d)%20=%3E%20%7B%0A%20%20%20%20const%20tile%20=%20d.tile;%0A%20%20%20%20remember(tile);%0A%20%20%20%20const%20entry%20=%20layout().entries.find((e)%20=%3E%20e.tile%20===%20tile);%0A%20%20%20%20d.key%20=%20entry%20?%20entry.key%20:%20tileKey(tile);%0A%20%20%20%20d.bounds%20=%20unclipAncestors(tile);%0A%20%20%20%20d.base%20=%20shownTranslate(tile);%0A%20%20%20%20tile.style.transition%20=%20%22none%22;%0A%20%20%20%20tile.style.zIndex%20=%20String(++state.z);%0A%20%20%20%20tile.style.outline%20=%20%223px%20solid%20rgba(255,255,255,0.85)%22;%0A%20%20%20%20tile.style.cursor%20=%20%22grabbing%22;%0A%20%20%20%20tile.ownerDocument.body.style.userSelect%20=%20%22none%22;%0A%20%20%20%20try%20%7B%20tile.setPointerCapture(d.pointerId);%20%7D%20catch%20(err)%20%7B%7D%0A%20%20%7D;%0A%0A%20%20const%20settle%20=%20(d)%20=%3E%20%7B%0A%20%20%20%20const%20tile%20=%20d.tile;%0A%20%20%20%20const%20saved%20=%20state.styled.get(tile)%20%7C%7C%20%7B%7D;%0A%20%20%20%20tile.style.transition%20=%20SLIDE;%0A%20%20%20%20tile.style.outline%20=%20saved.outline%20%7C%7C%20%22%22;%0A%20%20%20%20tile.style.cursor%20=%20%22grab%22;%0A%20%20%20%20tile.ownerDocument.body.style.userSelect%20=%20%22%22;%0A%20%20%20%20try%20%7B%20tile.releasePointerCapture(d.pointerId);%20%7D%20catch%20(err)%20%7B%7D%0A%20%20%7D;%0A%0A%20%20const%20finishDrag%20=%20(d,%20commit)%20=%3E%20%7B%0A%20%20%20%20state.drag%20=%20null;%0A%20%20%20%20if%20(commit%20&amp;&amp;%20d.preview)%20state.order%20=%20d.preview;%0A%20%20%20%20settle(d);%0A%20%20%20%20applyLayout();%0A%20%20%7D;%0A%0A%20%20const%20onDown%20=%20(e)%20=%3E%20%7B%0A%20%20%20%20if%20(e.button%20!==%200%20%7C%7C%20state.drag)%20return;%0A%20%20%20%20const%20target%20=%20e.composedPath%20?%20e.composedPath()%5B0%5D%20:%20e.target;%0A%20%20%20%20const%20tile%20=%20tileFrom(target);%0A%20%20%20%20if%20(!tile)%20return;%0A%20%20%20%20state.drag%20=%20%7B%20tile,%20key:%20null,%20pointerId:%20e.pointerId,%20startX:%20e.clientX,%20startY:%20e.clientY,%20moved:%20false,%20target:%20-1,%20preview:%20null%20%7D;%0A%20%20%7D;%0A%0A%20%20const%20onMove%20=%20(e)%20=%3E%20%7B%0A%20%20%20%20const%20d%20=%20state.drag;%0A%20%20%20%20if%20(!d%20%7C%7C%20e.pointerId%20!==%20d.pointerId)%20return;%0A%20%20%20%20const%20dx%20=%20e.clientX%20-%20d.startX,%20dy%20=%20e.clientY%20-%20d.startY;%0A%20%20%20%20if%20(!d.moved)%20%7B%0A%20%20%20%20%20%20if%20(Math.hypot(dx,%20dy)%20%3C%20DRAG_THRESHOLD)%20return;%0A%20%20%20%20%20%20d.moved%20=%20true;%0A%20%20%20%20%20%20lift(d);%0A%20%20%20%20%7D%0A%20%20%20%20e.preventDefault();%0A%20%20%20%20e.stopPropagation();%0A%20%20%20%20const%20want%20=%20clamp(d.tile,%20d.base.dx%20+%20dx,%20d.base.dy%20+%20dy,%20d.bounds);%0A%20%20%20%20d.tile.style.translate%20=%20Math.round(want.dx)%20+%20%22px%20%22%20+%20Math.round(want.dy)%20+%20%22px%22;%0A%20%20%20%20const%20%7B%20entries,%20slots,%20keys%20%7D%20=%20layout();%0A%20%20%20%20const%20mine%20=%20entries.find((entry)%20=%3E%20entry.key%20===%20d.key);%0A%20%20%20%20if%20(!mine%20%7C%7C%20!keys.includes(d.key))%20return;%0A%20%20%20%20const%20group%20=%20slots.map((slot,%20i)%20=%3E%20i).filter((i)%20=%3E%20sameSize(slots%5Bi%5D,%20mine.natural));%0A%20%20%20%20const%20pick%20=%20slotAt(group.map((i)%20=%3E%20slots%5Bi%5D),%20e.clientX,%20e.clientY);%0A%20%20%20%20if%20(pick%20%3C%200%20%7C%7C%20group%5Bpick%5D%20===%20d.target)%20return;%0A%20%20%20%20d.target%20=%20group%5Bpick%5D;%0A%20%20%20%20const%20groupKeys%20=%20group.map((i)%20=%3E%20keys%5Bi%5D);%0A%20%20%20%20groupKeys.splice(groupKeys.indexOf(d.key),%201);%0A%20%20%20%20groupKeys.splice(pick,%200,%20d.key);%0A%20%20%20%20const%20preview%20=%20keys.slice();%0A%20%20%20%20group.forEach((slotIndex,%20position)%20=%3E%20%7B%20preview%5BslotIndex%5D%20=%20groupKeys%5Bposition%5D;%20%7D);%0A%20%20%20%20d.preview%20=%20preview;%0A%20%20%20%20applyLayout(preview);%0A%20%20%7D;%0A%0A%20%20const%20onUp%20=%20(e)%20=%3E%20%7B%0A%20%20%20%20const%20d%20=%20state.drag;%0A%20%20%20%20if%20(!d%20%7C%7C%20e.pointerId%20!==%20d.pointerId)%20return;%0A%20%20%20%20if%20(!d.moved)%20%7B%0A%20%20%20%20%20%20state.drag%20=%20null;%0A%20%20%20%20%20%20return;%0A%20%20%20%20%7D%0A%20%20%20%20e.preventDefault();%0A%20%20%20%20e.stopPropagation();%0A%20%20%20%20suppressClick%20=%20true;%0A%20%20%20%20setTimeout(()%20=%3E%20%7B%20suppressClick%20=%20false;%20%7D,%200);%0A%20%20%20%20finishDrag(d,%20e.type%20!==%20%22pointercancel%22);%0A%20%20%7D;%0A%0A%20%20const%20onKey%20=%20(e)%20=%3E%20%7B%0A%20%20%20%20if%20(e.key%20===%20%22Escape%22%20&amp;&amp;%20state.drag%20&amp;&amp;%20state.drag.moved)%20%7B%0A%20%20%20%20%20%20e.preventDefault();%0A%20%20%20%20%20%20e.stopPropagation();%0A%20%20%20%20%20%20finishDrag(state.drag,%20false);%0A%20%20%20%20%7D%0A%20%20%7D;%0A%0A%20%20const%20onClick%20=%20(e)%20=%3E%20%7B%0A%20%20%20%20if%20(!suppressClick)%20return;%0A%20%20%20%20e.preventDefault();%0A%20%20%20%20e.stopPropagation();%0A%20%20%7D;%0A%0A%20%20const%20onDragStart%20=%20(e)%20=%3E%20%7B%0A%20%20%20%20if%20(state.drag)%20e.preventDefault();%0A%20%20%7D;%0A%0A%20%20const%20listen%20=%20(target,%20type,%20fn)%20=%3E%20%7B%0A%20%20%20%20target.addEventListener(type,%20fn,%20true);%0A%20%20%20%20state.listeners.push(%5Btarget,%20type,%20fn%5D);%0A%20%20%7D;%0A%0A%20%20const%20toast%20=%20(msg)%20=%3E%20%7B%0A%20%20%20%20const%20d%20=%20document.createElement(%22div%22);%0A%20%20%20%20d.textContent%20=%20msg;%0A%20%20%20%20Object.assign(d.style,%20%7B%0A%20%20%20%20%20%20position:%20%22fixed%22,%20left:%20%2250%25%22,%20top:%20%2216px%22,%20transform:%20%22translateX(-50%25)%22,%20zIndex:%20%222147483647%22,%0A%20%20%20%20%20%20background:%20%22rgba(20,20,20,0.9)%22,%20color:%20%22white%22,%20padding:%20%2210px%2016px%22,%20borderRadius:%20%228px%22,%0A%20%20%20%20%20%20font:%20%2214px/1.4%20system-ui,%20sans-serif%22,%20pointerEvents:%20%22none%22,%20transition:%20%22opacity%200.4s%22,%20maxWidth:%20%2280vw%22%0A%20%20%20%20%7D);%0A%20%20%20%20document.body.appendChild(d);%0A%20%20%20%20setTimeout(()%20=%3E%20%7B%0A%20%20%20%20%20%20d.style.opacity%20=%20%220%22;%0A%20%20%20%20%20%20setTimeout(()%20=%3E%20d.remove(),%20500);%0A%20%20%20%20%7D,%203500);%0A%20%20%7D;%0A%0A%20%20const%20enable%20=%20()%20=%3E%20%7B%0A%20%20%20%20documents().forEach((doc)%20=%3E%20%7B%0A%20%20%20%20%20%20listen(doc,%20%22pointerdown%22,%20onDown);%0A%20%20%20%20%20%20listen(doc,%20%22pointermove%22,%20onMove);%0A%20%20%20%20%20%20listen(doc,%20%22pointerup%22,%20onUp);%0A%20%20%20%20%20%20listen(doc,%20%22pointercancel%22,%20onUp);%0A%20%20%20%20%20%20listen(doc,%20%22keydown%22,%20onKey);%0A%20%20%20%20%20%20listen(doc,%20%22click%22,%20onClick);%0A%20%20%20%20%20%20listen(doc,%20%22dragstart%22,%20onDragStart);%0A%20%20%20%20%20%20listen(doc,%20%22transitionend%22,%20scheduleRefresh);%0A%20%20%20%20%20%20const%20mo%20=%20new%20MutationObserver(onMutations);%0A%20%20%20%20%20%20mo.observe(doc.body,%20%7B%20childList:%20true,%20subtree:%20true,%20attributes:%20true,%20attributeFilter:%20%5B%22style%22%5D%20%7D);%0A%20%20%20%20%20%20state.observers.push(mo);%0A%20%20%20%20%7D);%0A%20%20%20%20listen(window,%20%22resize%22,%20scheduleRefresh);%0A%20%20%20%20state.timer%20=%20setInterval(scheduleRefresh,%20500);%0A%20%20%20%20const%20tiles%20=%20allTiles();%0A%20%20%20%20tiles.forEach(prime);%0A%20%20%20%20toast(tiles.length%20?%20%22Arrange%20mode%20on:%20drag%20a%20tile%20to%20a%20new%20spot%20in%20the%20grid.%20Click%20the%20bookmark%20again%20to%20restore%20the%20usual%20order%20and%20turn%20off.%22%20:%20%22Arrange%20mode%20on,%20but%20no%20video%20tiles%20were%20found%20yet.%20Try%20again%20once%20participants%20are%20visible.%22);%0A%20%20%7D;%0A%0A%20%20const%20disable%20=%20()%20=%3E%20%7B%0A%20%20%20%20state.listeners.forEach((%5Btarget,%20type,%20fn%5D)%20=%3E%20target.removeEventListener(type,%20fn,%20true));%0A%20%20%20%20state.observers.forEach((mo)%20=%3E%20mo.disconnect());%0A%20%20%20%20clearInterval(state.timer);%0A%20%20%20%20if%20(state.raf)%20cancelAnimationFrame(state.raf);%0A%20%20%20%20state.styled.forEach((saved,%20el)%20=%3E%20%7B%0A%20%20%20%20%20%20el.style.transition%20=%20saved.transition;%0A%20%20%20%20%20%20el.style.translate%20=%20saved.translate;%0A%20%20%20%20%20%20el.style.zIndex%20=%20saved.zIndex;%0A%20%20%20%20%20%20el.style.position%20=%20saved.position;%0A%20%20%20%20%20%20el.style.cursor%20=%20saved.cursor;%0A%20%20%20%20%20%20el.style.outline%20=%20saved.outline;%0A%20%20%20%20%7D);%0A%20%20%20%20state.ancestors.forEach((saved,%20el)%20=%3E%20%7B%0A%20%20%20%20%20%20el.style.overflow%20=%20saved.overflow;%0A%20%20%20%20%20%20el.style.contain%20=%20saved.contain;%0A%20%20%20%20%7D);%0A%20%20%20%20documents().forEach((doc)%20=%3E%20%7B%20doc.body.style.userSelect%20=%20%22%22;%20%7D);%0A%20%20%20%20delete%20window%5BNS%5D;%0A%20%20%20%20toast(%22Arrange%20mode%20off:%20the%20usual%20tile%20order%20is%20back.%22);%0A%20%20%7D;%0A%0A%20%20window%5BNS%5D%20=%20%7B%20enable,%20disable,%20state,%20findTiles:%20allTiles,%20layout%20%7D;%0A%20%20enable();%0A%7D)()" title="Drag me to your bookmarks bar"><span class="grip" aria-hidden="true"></span>Teams: Move Tiles</a>
+          <p class="drag-hint">Drag this button to your bookmarks bar</p>
+        </div>
+        <div class="tool-body">
+          <h3>Move Video Tiles</h3>
+          <p class="summary">Rearranges the meeting gallery by dragging tiles into new spots, the way Zoom lets you.</p>
+          <h4>How to use</h4>
+          <ol>
+            <li>Join a Teams meeting in your browser and click the bookmark.</li>
+            <li>Drag any participant's tile onto the spot where you want it. The other tiles slide over to make room and everything snaps back into the grid.</li>
+            <li>Click the bookmark again to restore the usual order and turn arranging off.</li>
+          </ol>
+          <p class="notes"><strong>Notes:</strong> Works in the regular gallery and in the thumbnail strip while someone shares their screen. Press Escape mid-drag to cancel. Buttons inside a tile still work; only dragging the tile itself moves it. Your order is kept for each person when cameras go on or off or when Teams rearranges the gallery, and it only changes what you see.</p>
+        </div>
+      </article>
+    </section>
+    <section class="group" id="limber-health" style="--accent: #2e2758">
+      <h2><span class="monogram" aria-hidden="true">L</span>Limber Health</h2>
+      <article class="tool" id="limber-automate-outcomes-assessment">
+        <div class="tool-install">
+          <a class="bookmarklet" href="javascript:(()%20=%3E%20%7B%0A%20%20function%20chooseFeet()%20%7B%0A%20%20%20%20const%20%5BfeetEl%5D%20=%20document.body.querySelectorAll(%22%5Bdata-testid='dropdown-input'%5D%22);%0A%20%20%20%20const%20eventFt%20=%20new%20InputEvent('input',%20%7B%20bubbles:%20true,%20cancelable:%20true,%20composed:%20true%20%7D);%0A%20%20%20%20Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,%20'value').set.call(feetEl,%20%221%22);%0A%20%20%20%20feetEl.dispatchEvent(eventFt);%0A%20%20%20%20feetEl.parentElement.parentElement.parentElement.parentElement.querySelector(%22%5Bid%5E='react-select-'%5D%5Bid$='-option-1'%5D%22).click();%0A%20%20%7D%0A%20%20function%20chooseInches()%20%7B%0A%20%20%20%20const%20%5B_,%20inchesEl%5D%20=%20document.body.querySelectorAll(%22%5Bdata-testid='dropdown-input'%5D%22);%0A%20%20%20%20const%20eventInches%20=%20new%20InputEvent('input',%20%7B%20bubbles:%20true,%20cancelable:%20true,%20composed:%20true%20%7D);%0A%20%20%20%20Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,%20'value').set.call(inchesEl,%20%221%22);%0A%20%20%20%20inchesEl.dispatchEvent(eventInches);%0A%20%20%20%20inchesEl.parentElement.parentElement.parentElement.parentElement.querySelector(%22%5Bid%5E='react-select-'%5D%5Bid$='-option-1'%5D%22).click();%0A%20%20%7D%0A%20%20function%20chooseWeight()%20%7B%0A%20%20%20%20const%20weightEl%20=%20document.body.querySelector(%22%5Bdata-testid='weight-height-lbs'%5D%22);%0A%20%20%20%20const%20eventWeight%20=%20new%20InputEvent('input',%20%7B%20bubbles:%20true,%20cancelable:%20true,%20composed:%20true%20%7D);%0A%20%20%20%20Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,%20'value').set.call(weightEl,%20%221%22);%0A%20%20%20%20weightEl.dispatchEvent(eventWeight);%0A%20%20%7D%0A%20%20function%20clickThrough()%20%7B%0A%20%20%20%20if%20(document.body.querySelector(%22%5Bdata-testid='button'%5D%22))%20%7B%0A%20%20%20%20%20%20if%20(document.body.querySelector(%22%5Bdata-testid='input'%5D%5Binputmode='numeric'%5D%22))%20%7B%0A%20%20%20%20%20%20%20%20const%20inputEl%20=%20document.body.querySelector(%22%5Bdata-testid='input'%5D%22);%0A%20%20%20%20%20%20%20%20const%20inputEvent%20=%20new%20InputEvent('input',%20%7B%20bubbles:%20true,%20cancelable:%20true,%20composed:%20true%20%7D);%0A%20%20%20%20%20%20%20%20Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,%20'value').set.call(inputEl,%20%2201/01/1990%22);%0A%20%20%20%20%20%20%20%20inputEl.dispatchEvent(inputEvent);%0A%20%20%20%20%20%20%7D%20else%20if%20(document.body.querySelector(%22%5Bdata-testid='dropdown-input'%5D%22))%20%7B%0A%20%20%20%20%20%20%20%20chooseFeet();%0A%20%20%20%20%20%20%20%20setTimeout(chooseInches,%20100);%0A%20%20%20%20%20%20%20%20setTimeout(chooseWeight,%20200);%0A%20%20%20%20%20%20%7D%20else%20%7B%0A%20%20%20%20%20%20%20%20document.body.querySelector(%22%5Bdata-testid='choice'%5D%22)?.click();%0A%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20document.body.querySelector(%22%5Bdata-testid='button'%5D%22)?.click();%0A%20%20%20%20%20%20setTimeout(clickThrough,%20100);%0A%20%20%20%20%7D%0A%20%20%7D%0A%20%20clickThrough();%0A%7D)()" title="Drag me to your bookmarks bar"><span class="grip" aria-hidden="true"></span>Automate OC</a>
+          <p class="drag-hint">Drag this button to your bookmarks bar</p>
+        </div>
+        <div class="tool-body">
+          <h3>Automate an Outcomes Assessment</h3>
+          <p class="summary">Fills in and clicks through every step of a Limber Health outcomes assessment so you can test the flow in seconds.</p>
+          <h4>How to use</h4>
+          <ol>
+            <li>Open an outcomes assessment in Limber Health.</li>
+            <li>Click the bookmark and watch it complete each step.</li>
+          </ol>
+          <p class="notes"><strong>Notes:</strong> Uses placeholder answers: the first choice on each question, a date of birth of 01/01/1990, and 1 for height and weight. Meant for testing, never for real patient data.</p>
+        </div>
+      </article>
+    </section>
+  </main>
+  <footer>By <a href="https://herstand.com" target="_blank" rel="noopener noreferrer">Micah Cowsik-Herstand</a> · <a href="https://github.com/herstand/bookmarklets" target="_blank" rel="noopener noreferrer">Source on GitHub</a></footer>
+
+<script>
+(() => {
+  const isMac = /Mac|iPhone|iPad/.test(navigator.platform || "");
+  document.documentElement.dataset.os = isMac ? "mac" : "win";
+  document.querySelectorAll("a.bookmarklet").forEach((link) => {
+    link.addEventListener("click", (event) => {
+      event.preventDefault();
+      const card = link.closest(".tool");
+      if (!card) return;
+      card.classList.remove("nudge");
+      void card.offsetWidth;
+      card.classList.add("nudge");
+      setTimeout(() => card.classList.remove("nudge"), 1800);
+    });
+  });
+})();
+</script>
+</body>
+</html>
