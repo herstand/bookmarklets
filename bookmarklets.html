@@ -313,12 +313,31 @@ footer a {
       </ol>
     </aside>
     <nav class="toc" aria-label="Sites">
+      <a href="#limber-health">Limber Health</a>
       <a href="#google-meet">Google Meet</a>
       <a href="#microsoft-teams">Microsoft Teams</a>
-      <a href="#limber-health">Limber Health</a>
     </nav>
   </header>
   <main>
+    <section class="group" id="limber-health" style="--accent: #2e2758">
+      <h2><span class="monogram" aria-hidden="true">L</span>Limber Health</h2>
+      <article class="tool" id="limber-automate-outcomes-assessment">
+        <div class="tool-install">
+          <a class="bookmarklet" href="javascript:(()%20=%3E%20%7B%0A%20%20function%20chooseFeet()%20%7B%0A%20%20%20%20const%20%5BfeetEl%5D%20=%20document.body.querySelectorAll(%22%5Bdata-testid='dropdown-input'%5D%22);%0A%20%20%20%20const%20eventFt%20=%20new%20InputEvent('input',%20%7B%20bubbles:%20true,%20cancelable:%20true,%20composed:%20true%20%7D);%0A%20%20%20%20Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,%20'value').set.call(feetEl,%20%221%22);%0A%20%20%20%20feetEl.dispatchEvent(eventFt);%0A%20%20%20%20feetEl.parentElement.parentElement.parentElement.parentElement.querySelector(%22%5Bid%5E='react-select-'%5D%5Bid$='-option-1'%5D%22).click();%0A%20%20%7D%0A%20%20function%20chooseInches()%20%7B%0A%20%20%20%20const%20%5B_,%20inchesEl%5D%20=%20document.body.querySelectorAll(%22%5Bdata-testid='dropdown-input'%5D%22);%0A%20%20%20%20const%20eventInches%20=%20new%20InputEvent('input',%20%7B%20bubbles:%20true,%20cancelable:%20true,%20composed:%20true%20%7D);%0A%20%20%20%20Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,%20'value').set.call(inchesEl,%20%221%22);%0A%20%20%20%20inchesEl.dispatchEvent(eventInches);%0A%20%20%20%20inchesEl.parentElement.parentElement.parentElement.parentElement.querySelector(%22%5Bid%5E='react-select-'%5D%5Bid$='-option-1'%5D%22).click();%0A%20%20%7D%0A%20%20function%20chooseWeight()%20%7B%0A%20%20%20%20const%20weightEl%20=%20document.body.querySelector(%22%5Bdata-testid='weight-height-lbs'%5D%22);%0A%20%20%20%20const%20eventWeight%20=%20new%20InputEvent('input',%20%7B%20bubbles:%20true,%20cancelable:%20true,%20composed:%20true%20%7D);%0A%20%20%20%20Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,%20'value').set.call(weightEl,%20%221%22);%0A%20%20%20%20weightEl.dispatchEvent(eventWeight);%0A%20%20%7D%0A%20%20function%20clickThrough()%20%7B%0A%20%20%20%20if%20(document.body.querySelector(%22%5Bdata-testid='button'%5D%22))%20%7B%0A%20%20%20%20%20%20if%20(document.body.querySelector(%22%5Bdata-testid='input'%5D%5Binputmode='numeric'%5D%22))%20%7B%0A%20%20%20%20%20%20%20%20const%20inputEl%20=%20document.body.querySelector(%22%5Bdata-testid='input'%5D%22);%0A%20%20%20%20%20%20%20%20const%20inputEvent%20=%20new%20InputEvent('input',%20%7B%20bubbles:%20true,%20cancelable:%20true,%20composed:%20true%20%7D);%0A%20%20%20%20%20%20%20%20Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,%20'value').set.call(inputEl,%20%2201/01/1990%22);%0A%20%20%20%20%20%20%20%20inputEl.dispatchEvent(inputEvent);%0A%20%20%20%20%20%20%7D%20else%20if%20(document.body.querySelector(%22%5Bdata-testid='dropdown-input'%5D%22))%20%7B%0A%20%20%20%20%20%20%20%20chooseFeet();%0A%20%20%20%20%20%20%20%20setTimeout(chooseInches,%20100);%0A%20%20%20%20%20%20%20%20setTimeout(chooseWeight,%20200);%0A%20%20%20%20%20%20%7D%20else%20%7B%0A%20%20%20%20%20%20%20%20document.body.querySelector(%22%5Bdata-testid='choice'%5D%22)?.click();%0A%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20document.body.querySelector(%22%5Bdata-testid='button'%5D%22)?.click();%0A%20%20%20%20%20%20setTimeout(clickThrough,%20100);%0A%20%20%20%20%7D%0A%20%20%7D%0A%20%20clickThrough();%0A%7D)()" title="Drag me to your bookmarks bar"><span class="grip" aria-hidden="true"></span>Automate OC</a>
+          <p class="drag-hint">Drag this button to your bookmarks bar</p>
+        </div>
+        <div class="tool-body">
+          <h3>Automate an Outcomes Assessment</h3>
+          <p class="summary">Fills in and clicks through every step of a Limber Health outcomes assessment so you can test the flow in seconds.</p>
+          <h4>How to use</h4>
+          <ol>
+            <li>Open an outcomes assessment in Limber Health.</li>
+            <li>Click the bookmark and watch it complete each step.</li>
+          </ol>
+          <p class="notes"><strong>Notes:</strong> Uses placeholder answers: the first choice on each question, a date of birth of 01/01/1990, and 1 for height and weight. Meant for testing, never for real patient data.</p>
+        </div>
+      </article>
+    </section>
     <section class="group" id="google-meet" style="--accent: #00897b">
       <h2><span class="monogram" aria-hidden="true">GM</span>Google Meet</h2>
       <article class="tool" id="google-meet-mirror-video">
@@ -356,25 +375,6 @@ footer a {
             <li>Click the bookmark again to restore the usual order and turn arranging off.</li>
           </ol>
           <p class="notes"><strong>Notes:</strong> Works in the regular gallery and in the thumbnail strip while someone shares their screen. Press Escape mid-drag to cancel. Buttons inside a tile still work; only dragging the tile itself moves it. Your order is kept for each person when cameras go on or off or when Teams rearranges the gallery, and it only changes what you see.</p>
-        </div>
-      </article>
-    </section>
-    <section class="group" id="limber-health" style="--accent: #2e2758">
-      <h2><span class="monogram" aria-hidden="true">L</span>Limber Health</h2>
-      <article class="tool" id="limber-automate-outcomes-assessment">
-        <div class="tool-install">
-          <a class="bookmarklet" href="javascript:(()%20=%3E%20%7B%0A%20%20function%20chooseFeet()%20%7B%0A%20%20%20%20const%20%5BfeetEl%5D%20=%20document.body.querySelectorAll(%22%5Bdata-testid='dropdown-input'%5D%22);%0A%20%20%20%20const%20eventFt%20=%20new%20InputEvent('input',%20%7B%20bubbles:%20true,%20cancelable:%20true,%20composed:%20true%20%7D);%0A%20%20%20%20Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,%20'value').set.call(feetEl,%20%221%22);%0A%20%20%20%20feetEl.dispatchEvent(eventFt);%0A%20%20%20%20feetEl.parentElement.parentElement.parentElement.parentElement.querySelector(%22%5Bid%5E='react-select-'%5D%5Bid$='-option-1'%5D%22).click();%0A%20%20%7D%0A%20%20function%20chooseInches()%20%7B%0A%20%20%20%20const%20%5B_,%20inchesEl%5D%20=%20document.body.querySelectorAll(%22%5Bdata-testid='dropdown-input'%5D%22);%0A%20%20%20%20const%20eventInches%20=%20new%20InputEvent('input',%20%7B%20bubbles:%20true,%20cancelable:%20true,%20composed:%20true%20%7D);%0A%20%20%20%20Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,%20'value').set.call(inchesEl,%20%221%22);%0A%20%20%20%20inchesEl.dispatchEvent(eventInches);%0A%20%20%20%20inchesEl.parentElement.parentElement.parentElement.parentElement.querySelector(%22%5Bid%5E='react-select-'%5D%5Bid$='-option-1'%5D%22).click();%0A%20%20%7D%0A%20%20function%20chooseWeight()%20%7B%0A%20%20%20%20const%20weightEl%20=%20document.body.querySelector(%22%5Bdata-testid='weight-height-lbs'%5D%22);%0A%20%20%20%20const%20eventWeight%20=%20new%20InputEvent('input',%20%7B%20bubbles:%20true,%20cancelable:%20true,%20composed:%20true%20%7D);%0A%20%20%20%20Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,%20'value').set.call(weightEl,%20%221%22);%0A%20%20%20%20weightEl.dispatchEvent(eventWeight);%0A%20%20%7D%0A%20%20function%20clickThrough()%20%7B%0A%20%20%20%20if%20(document.body.querySelector(%22%5Bdata-testid='button'%5D%22))%20%7B%0A%20%20%20%20%20%20if%20(document.body.querySelector(%22%5Bdata-testid='input'%5D%5Binputmode='numeric'%5D%22))%20%7B%0A%20%20%20%20%20%20%20%20const%20inputEl%20=%20document.body.querySelector(%22%5Bdata-testid='input'%5D%22);%0A%20%20%20%20%20%20%20%20const%20inputEvent%20=%20new%20InputEvent('input',%20%7B%20bubbles:%20true,%20cancelable:%20true,%20composed:%20true%20%7D);%0A%20%20%20%20%20%20%20%20Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,%20'value').set.call(inputEl,%20%2201/01/1990%22);%0A%20%20%20%20%20%20%20%20inputEl.dispatchEvent(inputEvent);%0A%20%20%20%20%20%20%7D%20else%20if%20(document.body.querySelector(%22%5Bdata-testid='dropdown-input'%5D%22))%20%7B%0A%20%20%20%20%20%20%20%20chooseFeet();%0A%20%20%20%20%20%20%20%20setTimeout(chooseInches,%20100);%0A%20%20%20%20%20%20%20%20setTimeout(chooseWeight,%20200);%0A%20%20%20%20%20%20%7D%20else%20%7B%0A%20%20%20%20%20%20%20%20document.body.querySelector(%22%5Bdata-testid='choice'%5D%22)?.click();%0A%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20document.body.querySelector(%22%5Bdata-testid='button'%5D%22)?.click();%0A%20%20%20%20%20%20setTimeout(clickThrough,%20100);%0A%20%20%20%20%7D%0A%20%20%7D%0A%20%20clickThrough();%0A%7D)()" title="Drag me to your bookmarks bar"><span class="grip" aria-hidden="true"></span>Automate OC</a>
-          <p class="drag-hint">Drag this button to your bookmarks bar</p>
-        </div>
-        <div class="tool-body">
-          <h3>Automate an Outcomes Assessment</h3>
-          <p class="summary">Fills in and clicks through every step of a Limber Health outcomes assessment so you can test the flow in seconds.</p>
-          <h4>How to use</h4>
-          <ol>
-            <li>Open an outcomes assessment in Limber Health.</li>
-            <li>Click the bookmark and watch it complete each step.</li>
-          </ol>
-          <p class="notes"><strong>Notes:</strong> Uses placeholder answers: the first choice on each question, a date of birth of 01/01/1990, and 1 for height and weight. Meant for testing, never for real patient data.</p>
         </div>
       </article>
     </section>

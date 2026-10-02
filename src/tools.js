@@ -4,6 +4,26 @@ import AutomateOutcomesAssessmentURI from "./limber/index.js";
 
 export default [
   {
+    id: "limber-health",
+    name: "Limber Health",
+    accent: "#2e2758",
+    monogram: "L",
+    tools: [
+      {
+        id: "limber-automate-outcomes-assessment",
+        name: "Automate an Outcomes Assessment",
+        label: "Automate OC",
+        href: AutomateOutcomesAssessmentURI,
+        summary: "Fills in and clicks through every step of a Limber Health outcomes assessment so you can test the flow in seconds.",
+        steps: [
+          "Open an outcomes assessment in Limber Health.",
+          "Click the bookmark and watch it complete each step."
+        ],
+        notes: "Uses placeholder answers: the first choice on each question, a date of birth of 01/01/1990, and 1 for height and weight. Meant for testing, never for real patient data."
+      }
+    ]
+  },
+  {
     id: "google-meet",
     name: "Google Meet",
     accent: "#00897b",
@@ -42,26 +62,6 @@ export default [
           "Click the bookmark again to restore the usual order and turn arranging off."
         ],
         notes: "Works in the regular gallery and in the thumbnail strip while someone shares their screen. Press Escape mid-drag to cancel. Buttons inside a tile still work; only dragging the tile itself moves it. Your order is kept for each person when cameras go on or off or when Teams rearranges the gallery, and it only changes what you see."
-      }
-    ]
-  },
-  {
-    id: "limber-health",
-    name: "Limber Health",
-    accent: "#2e2758",
-    monogram: "L",
-    tools: [
-      {
-        id: "limber-automate-outcomes-assessment",
-        name: "Automate an Outcomes Assessment",
-        label: "Automate OC",
-        href: AutomateOutcomesAssessmentURI,
-        summary: "Fills in and clicks through every step of a Limber Health outcomes assessment so you can test the flow in seconds.",
-        steps: [
-          "Open an outcomes assessment in Limber Health.",
-          "Click the bookmark and watch it complete each step."
-        ],
-        notes: "Uses placeholder answers: the first choice on each question, a date of birth of 01/01/1990, and 1 for height and weight. Meant for testing, never for real patient data."
       }
     ]
   }
